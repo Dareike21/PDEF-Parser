@@ -3,6 +3,20 @@ package parser;
 import debug.*;
 import tokenizer.*;
 
+/*
+This class defines a recursive descent parser for the language PDef-light with context free grammar as follows:
+
+    Program     --> Block
+    Block       --> lcbT StmtList rcbT
+    StmtList    --> Stmt { commaT Stmt }
+    Stmt        --> Declaration | Assignment | Block
+    Declaration --> typeT identT
+    Assignment  --> identT assignT identT
+    
+In this grammar the terminals lcbT, rcbT, commaT, identT, typeT, assignT represent tokens in the lexical description for PDef-light.
+
+*/
+
 public class Parser {
 
 	// Class Invariant:
@@ -61,18 +75,21 @@ public class Parser {
 	// Grammar Rule: Stmt --> Assignment | Declaration | Block
 	private void parseStmt() {
 		debug.show(">>> Entering parseStmt");
+		
 		debug.show("<<< Leaving parseStmt");
 	}
 
 	// Grammar Rule: Assignment --> identT assign identT
 	private void parseAssignment() {
 		debug.show(">>> Entering parseAssignment");
+		
 		debug.show("<<< Leaving parseAssignment");
 	}
 
 	// Grammar Rule: Declaration --> typeT identT
 	private void parseDeclaration() {
 		debug.show(">>> Entering parseDeclaration");
+		
 		debug.show("<<< Leaving parseDeclaration");
 	}
 

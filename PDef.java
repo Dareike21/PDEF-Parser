@@ -61,6 +61,7 @@ public class PDef {
 
         Tokenizer tokenStream = new Tokenizer(in, echo);
         Parser parse = new Parser(tokenStream);
+        
         parse.parseProgram();
         System.out.println("Program parsed!");
     }
