@@ -75,7 +75,20 @@ public class Parser {
 	// Grammar Rule: Stmt --> Assignment | Declaration | Block
 	private void parseStmt() {
 		debug.show(">>> Entering parseStmt");
-		
+		switch(currentToken.getType())
+		{
+			case TYPE_T:
+				parseDeclaration();
+				break;
+			case IDENT_T:
+				parseAssignment();
+				break;
+			case LCB_T:
+				parseBlock();
+				break;
+			default:
+				error();
+		}
 		debug.show("<<< Leaving parseStmt");
 	}
 
