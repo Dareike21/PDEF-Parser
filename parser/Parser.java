@@ -64,9 +64,9 @@ public class Parser {
 		debug.show(">>> Entering parseStmtList");
 
 		parseStmt();
-		while( currentToken.getType() == Token.TokenType.COMMA_T ) {
+		if( currentToken.getType() == Token.TokenType.COMMA_T ) {
 			consume(Token.TokenType.COMMA_T);
-			parseStmt();
+			parseStmtList();
 		}
 
 		debug.show("<<< Leaving parseStmtList");
