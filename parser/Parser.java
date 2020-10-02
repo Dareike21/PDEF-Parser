@@ -82,14 +82,17 @@ public class Parser {
 	// Grammar Rule: Assignment --> identT assign identT
 	private void parseAssignment() {
 		debug.show(">>> Entering parseAssignment");
-		
+		consume(Token.TokenType.IDENT_T);
+		consume(Token.TokenType.ASSIGN_T);
+		consume(Token.TokenType.IDENT_T);
 		debug.show("<<< Leaving parseAssignment");
 	}
 
 	// Grammar Rule: Declaration --> typeT identT
 	private void parseDeclaration() {
 		debug.show(">>> Entering parseDeclaration");
-		
+		consume(Token.TokenType.TYPE_T);
+		consume(Token.TokenType.IDENT_T);
 		debug.show("<<< Leaving parseDeclaration");
 	}
 
