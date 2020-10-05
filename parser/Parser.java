@@ -4,6 +4,8 @@ import debug.*;
 import tokenizer.*;
 import exceptions.*;
 
+import javax.naming.PartialResultException;
+
 /*
 This class defines a recursive descent parser for the language PDef-light with context free grammar as follows:
 
@@ -40,7 +42,7 @@ public class Parser {
 	}
 
 	// Grammar Rule: Program --> Block eotT
-	public void parseProgram() {
+	public void parseProgram() throws ParseException{
 		debug.show(">>> Entering parseProgram");
 
 		parseBlock();
@@ -50,7 +52,7 @@ public class Parser {
 	}
 
 	// Grammar Rule: Block --> lcbT StmtList rcbT
-	private void parseBlock() {
+	private void parseBlock() throws ParseException{
 		debug.show(">>> Entering parseBlock");
 
 		consume(Token.TokenType.LCB_T);
@@ -61,7 +63,7 @@ public class Parser {
 	}
 
 	// Grammar Rule: StmtList --> Stmt [ commaT Stmt ]
-	private void parseStmtList() {
+	private void parseStmtList() throws ParseException {
 		debug.show(">>> Entering parseStmtList");
 
 		parseStmt();
@@ -74,7 +76,7 @@ public class Parser {
 	}
 
 	// Grammar Rule: Stmt --> Assignment | Declaration | Block
-	private void parseStmt() {
+	private void parseStmt() throws ParseException{
 		debug.show(">>> Entering parseStmt");
 		switch(currentToken.getType())
 		{
@@ -94,7 +96,7 @@ public class Parser {
 	}
 
 	// Grammar Rule: Assignment --> identT assign identT
-	private void parseAssignment() {
+	private void parseAssignment() throws ParseException{
 		debug.show(">>> Entering parseAssignment");
 		consume(Token.TokenType.IDENT_T);
 		consume(Token.TokenType.ASSIGN_T);
@@ -103,7 +105,7 @@ public class Parser {
 	}
 
 	// Grammar Rule: Declaration --> typeT identT
-	private void parseDeclaration() {
+	private void parseDeclaration() throws ParseException{
 		debug.show(">>> Entering parseDeclaration");
 		consume(Token.TokenType.TYPE_T);
 		consume(Token.TokenType.IDENT_T);
@@ -115,14 +117,12 @@ public class Parser {
 
 	}
 
-	private void consume(Token.TokenType ttype) throws PDefException
+	private void consume(Token.TokenType ttype) throws ParseException
 	{
 		if (currentToken.getType() != ttype)
 		{
-			String msg = "Expected to see token " + ttype +
-					" but saw token " + currentToken.getType();
-			throw new PDefException(msg);
-			System.exit(0);
+			String msg = "Expected to see token " + ttype;
+			throw new ParseException(msg, currentToken);
 		}
 		currentToken = tokenStream.getNextToken();
 	}
