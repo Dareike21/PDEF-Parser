@@ -90,7 +90,7 @@ public class Parser {
 				parseBlock();
 				break;
 			default:
-				error();
+				throw new ParseException("Expected to see  TYPE_T, IDENT_T, LCB_T", currentToken);
 		}
 		debug.show("<<< Leaving parseStmt");
 	}
@@ -110,11 +110,6 @@ public class Parser {
 		consume(Token.TokenType.TYPE_T);
 		consume(Token.TokenType.IDENT_T);
 		debug.show("<<< Leaving parseDeclaration");
-	}
-
-	private void error()
-	{
-
 	}
 
 	private void consume(Token.TokenType ttype) throws ParseException
