@@ -2,6 +2,7 @@ package parser;
 
 import debug.*;
 import tokenizer.*;
+import exceptions.*;
 
 /*
 This class defines a recursive descent parser for the language PDef-light with context free grammar as follows:
@@ -109,12 +110,18 @@ public class Parser {
 		debug.show("<<< Leaving parseDeclaration");
 	}
 
-	private void error() {}
+	private void error()
+	{
 
-	private void consume(Token.TokenType ttype) {
-		if (currentToken.getType() != ttype) {
-			System.out.println("Expected to see token " + ttype +
-				" but saw token " + currentToken.getType());
+	}
+
+	private void consume(Token.TokenType ttype) throws PDefException
+	{
+		if (currentToken.getType() != ttype)
+		{
+			String msg = "Expected to see token " + ttype +
+					" but saw token " + currentToken.getType();
+			throw new PDefException(msg);
 			System.exit(0);
 		}
 		currentToken = tokenStream.getNextToken();

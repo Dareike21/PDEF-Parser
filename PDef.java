@@ -1,7 +1,10 @@
 import java.io.*;
+
+import exceptions.PDefException;
 import tokenizer.*;
 import debug.*;
 import parser.*;
+import exceptions.*;
 
 /*
 Driver which tests the Token and Tokenizer classes. The method main implements
@@ -61,8 +64,14 @@ public class PDef {
 
         Tokenizer tokenStream = new Tokenizer(in, echo);
         Parser parse = new Parser(tokenStream);
-        
-        parse.parseProgram();
-        System.out.println("Program parsed!");
+
+        try
+        {
+            parse.parseProgram();
+            System.out.println("Program parsed!");
+        }catch(PDefException exc)
+        {
+            exc.print();
+        }
     }
 }
