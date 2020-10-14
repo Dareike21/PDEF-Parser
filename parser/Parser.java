@@ -78,19 +78,28 @@ public class Parser {
 	// Grammar Rule: Stmt --> Assignment | Declaration | Block
 	private void parseStmt() throws ParseException{
 		debug.show(">>> Entering parseStmt");
-		switch(currentToken.getType())
+		try {
+			switch (currentToken.getType()) {
+				case TYPE_T:
+					parseDeclaration();
+					break;
+				case IDENT_T:
+					parseAssignment();
+					break;
+				case LCB_T:
+					parseBlock();
+					break;
+				default:
+					throw new ParseException("Expected to see  TYPE_T, IDENT_T, LCB_T", currentToken);
+			}
+			if(!canFollowStatement(currentToken))
+			{
+				throw new ParseException("Expected a comma, right brace or end of file token", currentToken);
+			}
+		}catch (ParseException exc)
 		{
-			case TYPE_T:
-				parseDeclaration();
-				break;
-			case IDENT_T:
-				parseAssignment();
-				break;
-			case LCB_T:
-				parseBlock();
-				break;
-			default:
-				throw new ParseException("Expected to see  TYPE_T, IDENT_T, LCB_T", currentToken);
+			exc.print();
+			consume2StatementEnd();
 		}
 		debug.show("<<< Leaving parseStmt");
 	}
@@ -122,4 +131,17 @@ public class Parser {
 		currentToken = tokenStream.getNextToken();
 	}
 
+	private void consume2StatementEnd() {
+		Token.TokenType type = currentToken.getType();
+		while (!canFollowStatement(currentToken)) {
+			currentToken = tokenStream.getNextToken();
+			type = currentToken.getType();
+		}
+	}
+
+	private boolean canFollowStatement(Token t)
+	{
+		Token.TokenType type = t.getType();
+		return (type == Token.TokenType.COMMA_T || type == Token.TokenType.RCB_T || type == Token.TokenType.EOF_T);
+	}
 }
