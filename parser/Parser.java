@@ -90,7 +90,7 @@ public class Parser {
 					parseBlock();
 					break;
 				default:
-					throw new ParseException("Expected to see  TYPE_T, IDENT_T, LCB_T", currentToken);
+					throw new ParseException("Expected to see TYPE_T, IDENT_T, LCB_T", currentToken);
 			}
 			if(!canFollowStatement(currentToken))
 			{
@@ -109,7 +109,7 @@ public class Parser {
 		debug.show(">>> Entering parseAssignment");
 		consume(Token.TokenType.IDENT_T);
 		consume(Token.TokenType.ASSIGN_T);
-		consume(Token.TokenType.IDENT_T);
+		parseExpression();
 		debug.show("<<< Leaving parseAssignment");
 	}
 
@@ -121,6 +121,62 @@ public class Parser {
 		debug.show("<<< Leaving parseDeclaration");
 	}
 
+	private void parseExpression() throws ParseException {
+		debug.show(">>>  Entering parseExpression");
+		switch (currentToken.getType()) {
+			case ADD_T:
+				consume(Token.TokenType.ADD_T);
+				break;
+			case SUB_T:
+				consume(Token.TokenType.SUB_T);
+				break;
+			default:
+				throw new ParseException("Expected to see ADD_T or SUB_T", currentToken);
+		}
+		parseTerm();
+		debug.show(">>>  Leaving parseExpression");
+	}
+
+	private void parseTerm() throws ParseException
+	{
+		debug.show(">>>  Entering parseTerm");
+		switch(currentToken.getType())
+		{
+			case MUL_T:
+				consume(Token.TokenType.MUL_T);
+				break;
+			case DIV_T:
+				consume(Token.TokenType.DIV_T);
+				break;
+			case MOD_T:
+				consume(Token.TokenType.MOD_T);
+				break;
+		}
+		parseFactor();
+		debug.show(">>>  Leaving parseTerm");
+	}
+
+	private void parseFactor() throws ParseException
+	{
+		debug.show(">>>  Entering parseFactor");
+		switch(currentToken.getType())
+		{
+			case INT_T:
+				consume(Token.TokenType.INT_T);
+				break;
+			case FLOAT_T:
+				consume(Token.TokenType.FLOAT_T);
+				break;
+			case IDENT_T:
+				consume(Token.TokenType.IDENT_T);
+				break;
+			case LP_T:
+				consume(Token.TokenType.LP_T);
+				parseExpression();
+				consume(Token.TokenType.RP_T);
+		}
+		debug.show(">>>  Leaving parseTerm");
+	}
 	private void consume(Token.TokenType ttype) throws ParseException
 	{
 		if (currentToken.getType() != ttype)
