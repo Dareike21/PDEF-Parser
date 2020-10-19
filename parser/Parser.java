@@ -123,6 +123,14 @@ public class Parser {
 
 	private void parseExpression() throws ParseException {
 		debug.show(">>>  Entering parseExpression");
+		parseTerm();
+		parseExpressionP();
+		debug.show(">>>  Leaving parseExpression");
+	}
+
+	private void parseExpressionP() throws ParseException
+	{
+		debug.show(">>>  Entering parseExpression '");
 		switch (currentToken.getType()) {
 			case ADD_T:
 				consume(Token.TokenType.ADD_T);
@@ -133,13 +141,19 @@ public class Parser {
 			default:
 				throw new ParseException("Expected to see ADD_T or SUB_T", currentToken);
 		}
-		parseTerm();
-		debug.show(">>>  Leaving parseExpression");
+		debug.show(">>>  Leaving parseExpression '");
 	}
-
 	private void parseTerm() throws ParseException
 	{
 		debug.show(">>>  Entering parseTerm");
+		parseFactor();
+		parseTermP();
+		debug.show(">>>  Leaving parseTerm");
+	}
+
+	private void parseTermP() throws ParseException
+	{
+		debug.show(">>>  Entering parseTerm '");
 		switch(currentToken.getType())
 		{
 			case MUL_T:
@@ -152,10 +166,8 @@ public class Parser {
 				consume(Token.TokenType.MOD_T);
 				break;
 		}
-		parseFactor();
-		debug.show(">>>  Leaving parseTerm");
+		debug.show(">>>  Leaving parseTerm '");
 	}
-
 	private void parseFactor() throws ParseException
 	{
 		debug.show(">>>  Entering parseFactor");
