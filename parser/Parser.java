@@ -121,7 +121,7 @@ public class Parser {
 		debug.show("<<< Leaving parseDeclaration");
 	}
 
-	//Grammar Rule: Term --> Factor Term'
+	//Grammar Rule: Exp --> Term Exp'
 	private void parseExpression() throws ParseException {
 		debug.show(">>>  Entering parseExpression");
 		parseTerm();
@@ -129,10 +129,12 @@ public class Parser {
 		debug.show(">>>  Leaving parseExpression");
 	}
 
-	//Grammar Rule: (addT | subT) Exp'
+	//Grammar Rule: Exp' --> (addT | subT) Exp'
 	private void parseExpressionP() throws ParseException
 	{
 		debug.show(">>>  Entering parseExpression '");
+		//check to see if currentToken can follow Exp'. Need new method: canfollowExp' (should we use epilson or other one)
+		//check if we parse epilson or add and sub. If it can not follow, then we use switch statement.
 		switch (currentToken.getType()) {
 			case ADD_T:
 				consume(Token.TokenType.ADD_T);
@@ -143,6 +145,7 @@ public class Parser {
 			default:
 				throw new ParseException("Expected to see ADD_T or SUB_T", currentToken);
 		}
+		//parseTerm parseExp'
 		debug.show(">>>  Leaving parseExpression '");
 	}
 
