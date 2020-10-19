@@ -121,6 +121,7 @@ public class Parser {
 		debug.show("<<< Leaving parseDeclaration");
 	}
 
+	//Grammar Rule: Term --> Factor Term'
 	private void parseExpression() throws ParseException {
 		debug.show(">>>  Entering parseExpression");
 		parseTerm();
@@ -128,6 +129,7 @@ public class Parser {
 		debug.show(">>>  Leaving parseExpression");
 	}
 
+	//Grammar Rule: (addT | subT) Exp'
 	private void parseExpressionP() throws ParseException
 	{
 		debug.show(">>>  Entering parseExpression '");
@@ -143,6 +145,8 @@ public class Parser {
 		}
 		debug.show(">>>  Leaving parseExpression '");
 	}
+
+	//Grammar Rule: Term --> Factor Term'
 	private void parseTerm() throws ParseException
 	{
 		debug.show(">>>  Entering parseTerm");
@@ -151,6 +155,7 @@ public class Parser {
 		debug.show(">>>  Leaving parseTerm");
 	}
 
+	//Grammar Rule: (mulT | divT | modT) Term'
 	private void parseTermP() throws ParseException
 	{
 		debug.show(">>>  Entering parseTerm '");
@@ -168,6 +173,8 @@ public class Parser {
 		}
 		debug.show(">>>  Leaving parseTerm '");
 	}
+
+	//Grammar Rule: intT | floatT | IdenT | LPT | LPT Exp RPT
 	private void parseFactor() throws ParseException
 	{
 		debug.show(">>>  Entering parseFactor");
@@ -189,6 +196,7 @@ public class Parser {
 		}
 		debug.show(">>>  Leaving parseFactor");
 	}
+
 	private void consume(Token.TokenType ttype) throws ParseException
 	{
 		if (currentToken.getType() != ttype)
