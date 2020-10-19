@@ -175,7 +175,7 @@ public class Parser {
 				parseExpression();
 				consume(Token.TokenType.RP_T);
 		}
-		debug.show(">>>  Leaving parseTerm");
+		debug.show(">>>  Leaving parseFactor");
 	}
 	private void consume(Token.TokenType ttype) throws ParseException
 	{
