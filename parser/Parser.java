@@ -44,34 +44,28 @@ public class Parser {
 	// Grammar Rule: Program --> Block eotT
 	public void parseProgram() throws ParseException{
 		debug.show(">>> Entering parseProgram");
-
 		parseBlock();
 		consume(Token.TokenType.EOF_T);
-
 		debug.show("<<< Leaving parseProgram");
 	}
 
 	// Grammar Rule: Block --> lcbT StmtList rcbT
 	private void parseBlock() throws ParseException{
 		debug.show(">>> Entering parseBlock");
-
 		consume(Token.TokenType.LCB_T);
 		parseStmtList();
 		consume(Token.TokenType.RCB_T);
-
 		debug.show("<<< Leaving parseBlock");
 	}
 
 	// Grammar Rule: StmtList --> Stmt [ commaT Stmt ]
 	private void parseStmtList() throws ParseException {
 		debug.show(">>> Entering parseStmtList");
-
 		parseStmt();
 		if( currentToken.getType() == Token.TokenType.COMMA_T ) {
 			consume(Token.TokenType.COMMA_T);
 			parseStmtList();
 		}
-
 		debug.show("<<< Leaving parseStmtList");
 	}
 
