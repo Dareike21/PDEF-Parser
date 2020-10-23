@@ -135,15 +135,17 @@ public class Parser {
 		debug.show(">>>  Entering parseExpression '");
 		//check to see if currentToken can follow Exp'. Need new method: canfollowExp' (should we use epilson or other one)
 		//check if we parse epilson or add and sub. If it can not follow, then we use switch statement.
-		switch (currentToken.getType()) {
-			case ADD_T:
-				consume(Token.TokenType.ADD_T);
-				break;
-			case SUB_T:
-				consume(Token.TokenType.SUB_T);
-				break;
-			default:
-				throw new ParseException("Expected to see ADD_T or SUB_T", currentToken);
+		if(!canFollowExpP()) {
+			switch (currentToken.getType()) {
+				case ADD_T:
+					consume(Token.TokenType.ADD_T);
+					break;
+				case SUB_T:
+					consume(Token.TokenType.SUB_T);
+					break;
+				default:
+					throw new ParseException("Expected to see ADD_T or SUB_T", currentToken);
+			}
 		}
 		//parseTerm parseExp'
 		debug.show(">>>  Leaving parseExpression '");
