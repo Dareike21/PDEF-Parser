@@ -135,7 +135,7 @@ public class Parser {
 		debug.show(">>>  Entering parseExpression '");
 		//check to see if currentToken can follow Exp'. Need new method: canfollowExp' (should we use epilson or other one)
 		//check if we parse epilson or add and sub. If it can not follow, then we use switch statement.
-		if(!canFollowExpP()) {
+		if(!canFollowExp(currentToken)) {
 			switch (currentToken.getType()) {
 				case ADD_T:
 					consume(Token.TokenType.ADD_T);
@@ -147,7 +147,6 @@ public class Parser {
 					throw new ParseException("Expected to see ADD_T or SUB_T", currentToken);
 			}
 		}
-		//parseTerm parseExp'
 		debug.show(">>>  Leaving parseExpression '");
 	}
 
@@ -164,17 +163,18 @@ public class Parser {
 	private void parseTermP() throws ParseException
 	{
 		debug.show(">>>  Entering parseTerm '");
-		switch(currentToken.getType())
-		{
-			case MUL_T:
-				consume(Token.TokenType.MUL_T);
-				break;
-			case DIV_T:
-				consume(Token.TokenType.DIV_T);
-				break;
-			case MOD_T:
-				consume(Token.TokenType.MOD_T);
-				break;
+		if(!canFollowTerm(currentToken)) {
+			switch (currentToken.getType()) {
+				case MUL_T:
+					consume(Token.TokenType.MUL_T);
+					break;
+				case DIV_T:
+					consume(Token.TokenType.DIV_T);
+					break;
+				case MOD_T:
+					consume(Token.TokenType.MOD_T);
+					break;
+			}
 		}
 		debug.show(">>>  Leaving parseTerm '");
 	}
@@ -225,4 +225,16 @@ public class Parser {
 		Token.TokenType type = t.getType();
 		return (type == Token.TokenType.COMMA_T || type == Token.TokenType.RCB_T || type == Token.TokenType.EOF_T);
 	}
+	private boolean canFollowExp(Token t)
+	{
+		Token.TokenType type = t.getType();
+		return(type == Token.TokenType.INT_T || type == Token.TokenType.ADD_T || type == Token.TokenType.SUB_T || type == Token.TokenType.IDENT_T);
+	}
+
+	private boolean canFollowTerm(Token t)
+	{
+		Token.TokenType type = t.getType();
+		return(type == Token.TokenType.MUL_T || type == Token.TokenType.DIV_T || type == Token.TokenType.MOD_T);
+	}
+
 }
